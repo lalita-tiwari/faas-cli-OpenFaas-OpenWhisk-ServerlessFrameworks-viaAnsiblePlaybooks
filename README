@@ -1,0 +1,148 @@
+# Author- LALITA TIWARI
+# FALL 2021
+
+This directory contains code for implementing serverless FaaS solution on private clouds using OpenFaaS
+and OpenWhisk frameworks. I've written a function here, which takes the energy data as argument from the producer
+and then dumps it to the couch db. Where for OpenFaaS I'm using custom connector to listen the data stream and
+for OpenWhisk a apache kafka connector.
+
+Basically, my function will play a role of consumer here. same function is tested on both frameworks
+(OpenFaaS- custom connector)
+(OpenWhisk- kafka connector)
+
+Both the frameworks will be tested based on performance and auto scaling metrics.
+
+To draw the GRAPHS for comparison, graphana is installed and used.
+
+# csv file for testing is not included in the directory
+
+# OpenFaaS Installation Steps:
+
+# Installing Helm:
+
+cc@team7-vm1-km:~$ mkdir helm/
+cc@team7-vm1-km:~$ cd helm/
+cc@team7-vm1-km:~/helm$ curl -sSLf https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+Downloading https://get.helm.sh/helm-v3.7.1-linux-amd64.tar.gz
+helm installed into /usr/local/bin/helm
+
+# Installing OpenFaaS
+cc@team7-vm1-km:~/helm$ kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
+
+namespace/openfaas created
+namespace/openfaas-fn created
+
+You can install the CLI with a curl utility script, brew or by downloading the binary from the releases page.
+Once installed you'll get the faas-cli command and faas alias.
+
+# Creating and executing a function via OpenFaaS
+
+1) cc@team7-vm1-km:~/helm$ faas-cli new --lang python3 hello-test
+Folder: hello-test created.
+It will create a new python3 function using faas-cli with the name of hello-test where the --lang parameter specify the
+language as python3
+
+2) cc@team7-vm1-km:~/helm$ kubectl get svc -n openfaas
+
+To check the gateway cluster IP and port
+
+3) cc@team7-vm1-km:~/helm/hello-test$ ls
+check the files created under the hello-test folder
+
+4) update the gateway ip: port and the repository address of your docker hub in hello-test.yml file
+ write your function logic in handler.py
+
+5) faas-cli build -f ./hello-test.yml
+It will build the dockler image of your function.
+
+6) faas-cli deploy -f ./hello-test.yml
+Deploy the image,
+
+7) faas-cli publish -f ./hello-test.yml
+publish the image
+
+8) post and execute the function by passing the arguments to the function
+curl -X POST http://10.110.204.22:8080/function/hello-test --data-binary '{"docs":[{"x":"y","a":"b"}]}'
+
+9) OpenFaaS GUI to invoke the function
+http://129.114.25.12:31112/ui/
+
+cc@team7-vm1-km:~/helm/lalita-test$ cat /home/cc/helm/openfaas.pwd
+OpenFaaS admin password: wl7MYpYvQfKu
+
+cc@team7-vm1-km:~/helm/lalita-test$ faas-cli login --password wl7MYpYvQfKu -g http://10.110.204.22:8080
+
+
+
+# Install and set up of Kafka and zookeeper
+# create topic
+# couch db setup
+# create database
+
+# Write the producer code to send the data to kafka broker
+
+# write the function to listen the data from kafka broker and dump it to the couch db
+
+
+
+# Grafana
+
+The purpose of Grafana dashboards is to bring data together in a way that is both efficient
+and organized. It allows users to better understand the metrics of their data through queries,
+informative visualizations and alerts.
+
+ # OpenWhisk Installation Steps:
+
+ The name of the main function file you create in OpenWhisk should be __main__.py
+
+ main method in the function --args takes dict(dictionary) and return dict only.
+
+create requirements.txt, put your package module to import in it
+
+# RUN the below command to create virtual environment, this cmd gives you virtualenv folder containing packaging of environment.
+
+docker run --rm -v "$PWD:/tmp" openwhisk/python3 action bash-c "cd tmp && virtualenv virtualenv
+&& source virtualenv/bin/activate && pip install -r requirements.txt"
+
+
+
+# Next,put python file and virtual-env folder together and zip it
+
+# create function command
+ wsk action create owf --kind python:3 owf.zip -i
+
+# create trigger command (To invoke a function you would need to create a trigger)
+
+wsk trigger create MyKafkaTrigger -f /whisk.system/messaging/kafkaFeed -p
+brokers "[\"129.114.25.12:9092\"]" -p topic openwhisk -p isJSONData true -i
+
+# create RULE to associate the trigger with function
+
+wsk rule create owt /guest/MyKafkaTrigger owf -i
+
+# Run the connector in background
+cc@team7-vm1-km:~/helm/connector$ nohup python3 connector.py &
+
+# create kafka topics, assuming kafka and zookeeper set is installed
+
+# create couch db with name "openfaas" and "openwhisk"
+
+# Run the open faas client code
+python3 ofaas-client.py
+
+# Run the open whisk client code
+python3 owhisk-client.py
+
+# compare the graph using prometheus and grafana
+Prometheus is a monitoring solution for storing time series data like metrics.
+Grafana allows to visualize the data stored in Prometheus (and other sources).
+
+# output
+
+Both frameworks provide an excellent platform for deploying the serverless FaaS solution on private clouds.
+My study and experiment suggest that although OpenWhisk allocates more replicas to handle the function invocations
+and consumes less memory than OpenFaaS.
+
+However, OpenFaaS outperforms OpenWhisk. I was able to determine that OpenFaaS is more efficient than OpenWhisk in
+handling the large number of incoming requests (invocations) combined with large payload.
+
