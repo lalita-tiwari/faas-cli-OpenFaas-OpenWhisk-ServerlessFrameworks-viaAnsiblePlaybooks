@@ -1,10 +1,10 @@
 # Author- LALITA TIWARI
-# FALL 2021
+# Spring 2021
 
-This directory contains code for implementing serverless FaaS solution on private clouds using OpenFaaS
-and OpenWhisk frameworks. I've written a function here, which takes the energy data as argument from the producer
-and then dumps it to the couch db. Where for OpenFaaS I'm using custom connector to listen the data stream and
-for OpenWhisk a apache kafka connector.
+This directory contains code for a CLI (Command Line Argument) which is craeted to implement serverless FaaS solution on private clouds using OpenFaaS
+and OpenWhisk frameworks. 
+I've written a function here, which takes the energy data as argument from the producerand then dumps it to the couch db.
+Where for OpenFaaS I'm using custom connector to listen the data stream and for OpenWhisk a apache kafka connector.
 
 Basically, my function will play a role of consumer here. same function is tested on both frameworks
 (OpenFaaS- custom connector)
@@ -66,6 +66,7 @@ curl -X POST http://10.110.204.22:8080/function/hello-test --data-binary '{"docs
 
 9) OpenFaaS GUI to invoke the function
 http://129.114.25.12:31112/ui/
+# wl7MYpYvQfKu
 
 cc@team7-vm1-km:~/helm/lalita-test$ cat /home/cc/helm/openfaas.pwd
 OpenFaaS admin password: wl7MYpYvQfKu
