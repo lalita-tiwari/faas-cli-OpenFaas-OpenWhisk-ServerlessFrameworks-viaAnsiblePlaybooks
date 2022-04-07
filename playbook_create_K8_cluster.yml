@@ -1,0 +1,37 @@
+---
+
+# This playbook will create master node and worker node
+
+#  tasks:
+
+- hosts: all
+  remote_user: cc
+  become: yes
+  become_user: root
+  tasks:
+  - name: creating master node by running kubeadm init
+    ansible.builtin.shell:
+      cmd: 'sudo kubeadm init  --node-name kubemaster --control-plane-endpoint {{ master }} --pod-network-cidr=10.244.0.0/16;'
+    register: output
+
+
+  - name: run kube config commands
+    ansible.builtin.shell:
+      cmd: mkdir -p .kube; cp -i /etc/kubernetes/admin.conf .kube/config; chown $(id -u cc):$(id -g cc) .kube/config
+      #;chmod -R 777 .kube
+
+  - name: setting a permission on kube config commands
+    ansible.builtin.shell:
+      cmd: chmod -R 777 /home/cc/.kube
+
+  - name: Apply Flannel
+    ansible.builtin.shell:
+     cmd:  kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+
+  - name: taint the master node
+    ansible.builtin.shell:
+      cmd: kubectl taint nodes kubemaster node-role.kubernetes.io/master-
+
+
+

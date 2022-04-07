@@ -1,0 +1,51 @@
+---
+- hosts: all
+  remote_user: cc
+  tasks:
+    - name: Download charts
+      ansible.builtin.shell:
+        cmd: git clone https://github.com/helm/charts.git
+    - name: Register Local IP
+      ansible.builtin.shell:
+        cmd: ip address|grep "inet 10."| awk '{print $2}'|cut -d '/' -f 1
+      register: hostname
+    - set_fact:
+        contentbuff: |
+          nfs: 
+            server: {{ hostname.stdout }} 
+            path: /var/nfs/kubedata 
+          storageClass: 
+            name: openwhisk-nfs 
+            reclaimPolicy: Delete
+    - name: Configure NFS
+      copy:
+        dest: "openwhisk-nfs-client-provisioner.yaml"
+        content: "{{ contentbuff }}"
+
+    - name: create openwhisk namespace
+      ansible.builtin.shell:
+        cmd: kubectl create namespace openwhisk
+
+    - name: create nfs storage class
+      ansible.builtin.shell:
+        cmd: kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml & helm install nfs --namespace openwhisk charts/stable/nfs-client-provisioner -f openwhisk-nfs-client-provisioner.yaml
+
+    - name: install openfaas
+      ansible.builtin.shell:
+        cmd: helm repo add openfaas https://openfaas.github.io/faas-netes/ && helm repo update && helm upgrade openfaas --install openfaas/openfaas --namespace openfaas --set functionNamespace=openfaas-fn --set generateBasicAuth=true
+
+    - name: get password
+      ansible.builtin.shell:
+          cmd: kubectl get svc -n openfaas|grep gateway-external | awk '{print $5}'|cut -d ':' -f 2|cut -d '/' -f 1
+      register: port
+    - name: Echo port
+      ansible.builtin.debug:
+        msg: FaaS Port is {{ port }}
+
+    - name: get password
+      ansible.builtin.shell:
+        cmd: 'PASSWORD=$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode) && echo "OpenFaaS admin password: $PASSWORD"'
+      register: password
+    - name: Echo password
+      ansible.builtin.debug:
+        msg: Admin Pasword is {{ password }}

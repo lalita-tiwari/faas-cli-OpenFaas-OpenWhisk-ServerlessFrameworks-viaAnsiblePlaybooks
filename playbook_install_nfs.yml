@@ -1,0 +1,36 @@
+---
+- hosts: all
+  remote_user: cc #lokeshbelwal
+  become: yes
+  become_user: root
+  tasks:
+    - name: ensure nfs is at the latest version
+      ansible.builtin.shell:
+        cmd: apt install -y nfs-kernel-server
+
+    - name: enable nfs service
+      ansible.builtin.shell:
+          cmd: service nfs-kernel-server enable
+
+    - name: start nfs-kernel-server
+      ansible.builtin.shell:
+          cmd: service nfs-kernel-server start
+
+    - name: Create NFS Monunt
+      ansible.builtin.shell:
+        cmd: mkdir /var/nfs/kubedata -p
+    - name: Update /etc/exports
+      ansible.builtin.shell:
+        cmd: 'echo "/var/nfs/kubedata  *(rw,sync,no_subtree_check,no_root_squash,no_all_squash)" >> /etc/exports'
+    - name: Restart NFS
+      ansible.builtin.shell:
+        cmd: exportfs -rav & sudo umount /mnt & systemctl start nfs-server.service
+    - name: Register Local IP
+      ansible.builtin.shell:
+        cmd: ip address|grep "inet 10."| awk '{print $2}'|cut -d '/' -f 1
+      register: hostname
+    - set_fact:
+        host_ip: "{{ hostname.stdout }}"
+    - name: Mount NFS on Master
+      ansible.builtin.shell:
+        cmd: 'mount -t nfs {{ host_ip }}:/var/nfs/kubedata /mnt'

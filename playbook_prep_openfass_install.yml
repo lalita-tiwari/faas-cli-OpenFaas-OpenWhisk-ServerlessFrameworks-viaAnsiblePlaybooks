@@ -1,0 +1,15 @@
+---
+- hosts: all
+  remote_user: cc
+  become: yes
+  become_user: root
+  tasks:
+    - name: Download helm
+      ansible.builtin.shell:
+        cmd: curl https://baltocdn.com/helm/signing.asc | apt-key add - & apt-get install apt-transport-https --yes & echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+    - name: Update helm
+      ansible.builtin.shell:
+        cmd: apt-get update
+    - name: Install helm
+      ansible.builtin.shell:
+        cmd: apt-get install helm
