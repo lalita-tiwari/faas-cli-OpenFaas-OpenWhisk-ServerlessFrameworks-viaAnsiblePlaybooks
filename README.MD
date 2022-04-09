@@ -7,11 +7,16 @@ It is designed on top of the kubernetes cluster node.
 
 This tool is tested on macOS and compatible with intel and Apple Silicon.
 
-### How it functios
-The CLI tool asks for user consent to install Ansible on user's machine.
-Next choice,is given to install docker and kubernetes on the remote host in private cloud.
-After that, the choice to install either OpenFaas or OpenWhisk is given and based on that the serverless FaaS framework is installed.
 
+### How it functions?
+
+The CLI tool is a binary file which on execution asks for user consent to install Ansible on user's machine
+as all remote operation are orchestrated by Ansible.
+
+Next choice, the tool asks if there is an available private cloud with running kubernetes cluster.
+if the user response is NO then the tool installs the docker and kubernetes on remote host in private cloud.
+
+After that, the choice to install either OpenFaas or OpenWhisk is given and based on that the serverless FaaS framework is installed.
 
 
 ### Pre-requisite to run this CLI
