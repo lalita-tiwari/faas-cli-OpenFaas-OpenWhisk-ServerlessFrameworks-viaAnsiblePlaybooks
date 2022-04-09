@@ -1,12 +1,12 @@
 
-# A command line tool to implement the Serverless Frameworks in private clouds
+### A command line tool to implement the Serverless Frameworks in private clouds
 
 This directory contains code for a CLI (Command Line Interface) tool which is created to automate the implementation
 of serverless FaaS frameworks OpenFaaS and openWhisk on top of the kubernetes cluster node.
 
 This tool is tested on macOS and compatible with intel and Apple Silicon.
 
-# Pre-requisite to run this CLI
+### Pre-requisite to run this CLI
 
 1) create an instance in your private cloud and allow the below ports
 2) For SSH (PORT 22)
@@ -39,7 +39,7 @@ In go.mod file define the name of your CLI tool
 --> To build,
 go build faas-cli(tool name defined in go.mod file)
 
-# To run the cli tool
+### To run the cli tool
 Once downloaded you'll get the faas-cli command line zip folder.
 unzip the folder.
 
@@ -49,19 +49,19 @@ To allow permission run
 --> To Run
 ./CLI_Project
 
-# This CLI is using below ansible playbooks to install and setup the packages on cloud Virtual Machines
+### This CLI is using below ansible playbooks to install and setup the packages on cloud Virtual Machines
 1) An ansible playbook for Docker and Kubernetes cluster.
 2) An ansible playbook to install ansible 
 3) An ansible playbook for NFS Mounting (Network File Sharing) --> install_nfs.yml
 4) An ansible playbook to install openFaaS framework
 
 
-# Accessing OpenFaaS Frameworks
+### Accessing OpenFaaS Frameworks
 
 OpenFaaS Framework can be accessed via below link with username admin and password will be provided in the end of running this tool.
 http://129.114.25.142:31112
 
-# Creating and executing a function via OpenFaaS
+### Creating and executing a function via OpenFaaS
 
 1) cc@team7-vm1-km:~/helm$ faas-cli new --lang python3 hello-test
    Folder: hello-test created.
@@ -94,7 +94,7 @@ To check the gateway cluster IP and port
    http://129.114.25.12:31112/ui/
 
 
-# OpenWhisk Installation Steps:
+### OpenWhisk Installation Steps:
 
 The name of the main function file you create in OpenWhisk should be __main__.py
 
@@ -102,28 +102,28 @@ main method in the function --args takes dict(dictionary) and return dict only.
 
 create requirements.txt, put your package module to import in it
 
-# RUN the below command to create virtual environment, this cmd gives you virtualenv folder containing packaging of environment.
+### RUN the below command to create virtual environment, this cmd gives you virtualenv folder containing packaging of environment.
 
 docker run --rm -v "$PWD:/tmp" openwhisk/python3 action bash-c "cd tmp && virtualenv virtualenv
 && source virtualenv/bin/activate && pip install -r requirements.txt"
 
 
-# Next,put python file and virtual-env folder together and zip it
+### Next,put python file and virtual-env folder together and zip it
 
-# create function command
+### create function command
 wsk action create owf --kind python:3 owf.zip -i
 
-# create trigger command (To invoke a function you would need to create a trigger)
+### create trigger command (To invoke a function you would need to create a trigger)
 
 wsk trigger create MyKafkaTrigger -f /whisk.system/messaging/kafkaFeed -p
 brokers "[\"129.114.25.12:9092\"]" -p topic openwhisk -p isJSONData true -i
 
-# create RULE to associate the trigger with function
+### create RULE to associate the trigger with function
 
 wsk rule create owt /guest/MyKafkaTrigger owf -i
 
 
-# steps for the JFrog Artifactory
+### steps for the JFrog Artifactory
 
 jfrog rt c rt-server -url https://tiwarilalita.jfrog.io/artifactory 
 --user <USERNAME> --password <PASSWORD> --interactive=false
