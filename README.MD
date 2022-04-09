@@ -14,23 +14,23 @@ This tool is tested on macOS and compatible with intel and Apple Silicon.
   - Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
   - Ingress	IPv4	TCP	22 (SSH)	0.0.0.0/0,
 3) For kubernetes,docker and frameworks 
-   Egress	IPv4	Any	Any	0.0.0.0/0	-	-	Delete Rule
-   Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
-   Ingress	IPv4	TCP	443 (HTTPS)	0.0.0.0/0	-	-	Delete Rule
-   Ingress	IPv4	TCP	2379 - 2380	0.0.0.0/0	-	Etcd server client API (kube-apiserver, etcd)	Delete Rule
-   Ingress	IPv4	TCP	5000	0.0.0.0/0	-	Docker private registry	Delete Rule
-   Ingress	IPv4	TCP	6443	0.0.0.0/0	-	Kubernetes API server (all)	Delete Rule
-   Ingress	IPv4	TCP	8090	0.0.0.0/0	-	platform agent, master and worker nodes	Delete Rule
-   Ingress	IPv4	TCP	8091	0.0.0.0/0	-	Platform API Server	Delete Rule
-   Ingress	IPv4	TCP	10250	0.0.0.0/0	-	Kubelet API	Delete Rule
-   Ingress	IPv4	TCP	10251	0.0.0.0/0	-	Kubernetes kube-scheduler	Delete Rule
-   Ingress	IPv4	TCP	10252	0.0.0.0/0	-	Kubernetes kube-controller-manager	Delete Rule
-   Ingress	IPv4	TCP	10255	0.0.0.0/0	-	Kubernetes kubelet	Delete Rule
-   Ingress	IPv4	TCP	10257	0.0.0.0/0	-	Kube-controller-manager	Delete Rule
-   Ingress	IPv4	TCP	10259	0.0.0.0/0	-	Kube-scheduler (Self)	Delete Rule
-   Ingress	IPv4	TCP	30000 - 32767	0.0.0.0/0	-	Exposed Node Ports	Delete Rule
-   Ingress	IPv4	UDP	8285	0.0.0.0/0	-	flannel vxlan	Delete Rule
-   Ingress	IPv4	UDP	8472	0.0.0.0/0	-	Flannel overlay network
+ -  Egress	IPv4	Any	Any	0.0.0.0/0	-	-	Delete Rule
+ - Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
+ -  Ingress	IPv4	TCP	443 (HTTPS)	0.0.0.0/0	-	-	Delete Rule
+ -  Ingress	IPv4	TCP	2379 - 2380	0.0.0.0/0	-	Etcd server client API (kube-apiserver, etcd)	Delete Rule
+ -  Ingress	IPv4	TCP	5000	0.0.0.0/0	-	Docker private registry	Delete Rule
+ -  Ingress	IPv4	TCP	6443	0.0.0.0/0	-	Kubernetes API server (all)	Delete Rule
+ -  Ingress	IPv4	TCP	8090	0.0.0.0/0	-	platform agent, master and worker nodes	Delete Rule
+ -  Ingress	IPv4	TCP	8091	0.0.0.0/0	-	Platform API Server	Delete Rule
+ -  Ingress	IPv4	TCP	10250	0.0.0.0/0	-	Kubelet API	Delete Rule
+ -  Ingress	IPv4	TCP	10251	0.0.0.0/0	-	Kubernetes kube-scheduler	Delete Rule
+ -  Ingress	IPv4	TCP	10252	0.0.0.0/0	-	Kubernetes kube-controller-manager	Delete Rule
+ -  Ingress	IPv4	TCP	10255	0.0.0.0/0	-	Kubernetes kubelet	Delete Rule
+ -  Ingress	IPv4	TCP	10257	0.0.0.0/0	-	Kube-controller-manager	Delete Rule
+ -  Ingress	IPv4	TCP	10259	0.0.0.0/0	-	Kube-scheduler (Self)	Delete Rule
+ -  Ingress	IPv4	TCP	30000 - 32767	0.0.0.0/0	-	Exposed Node Ports	Delete Rule
+ -  Ingress	IPv4	UDP	8285	0.0.0.0/0	-	flannel vxlan	Delete Rule
+ -  Ingress	IPv4	UDP	8472	0.0.0.0/0	-	Flannel overlay network
 
 ### CLI is written in GO language using GoLand
 
