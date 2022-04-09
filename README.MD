@@ -10,9 +10,9 @@ This tool is tested on macOS and compatible with intel and Apple Silicon.
 
 1) create an instance in your private cloud and allow the below ports
 2) For SSH (PORT 22)
-   Egress	IPv4	Any	Any	0.0.0.0/0	-	-	Delete Rule
-   Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
-   Ingress	IPv4	TCP	22 (SSH)	0.0.0.0/0,
+  - Egress	IPv4	Any	Any	0.0.0.0/0	-	-	Delete Rule
+  - Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
+  - Ingress	IPv4	TCP	22 (SSH)	0.0.0.0/0,
 3) For kubernetes,docker and frameworks 
    Egress	IPv4	Any	Any	0.0.0.0/0	-	-	Delete Rule
    Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
@@ -32,7 +32,7 @@ This tool is tested on macOS and compatible with intel and Apple Silicon.
    Ingress	IPv4	UDP	8285	0.0.0.0/0	-	flannel vxlan	Delete Rule
    Ingress	IPv4	UDP	8472	0.0.0.0/0	-	Flannel overlay network
 
-## CLI is written in GO language using GoLand
+### CLI is written in GO language using GoLand
 
 You can install the CLI with a curl utility script, brew or by downloading the binary from the releases page.
 In go.mod file define the name of your CLI tool
@@ -44,7 +44,7 @@ Once downloaded you'll get the faas-cli command line zip folder.
 unzip the folder.
 
 To allow permission run 
---> chmod +x CLI_Project)
+--> chmod +x CLI_Project
 
 --> To Run
 ./CLI_Project
