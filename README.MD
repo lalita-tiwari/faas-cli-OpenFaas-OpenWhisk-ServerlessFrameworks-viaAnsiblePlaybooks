@@ -59,7 +59,7 @@ To allow permission run
 ### Accessing OpenFaaS Frameworks
 
 OpenFaaS Framework can be accessed via below link with username admin and password will be provided in the end of running this tool.
-http://129.114.25.142:31112
+http://CloudIP:31112
 
 ### Creating and executing a function via OpenFaaS
 
@@ -88,10 +88,10 @@ To check the gateway cluster IP and port
    publish the image
 
 8) post and execute the function by passing the arguments to the function
-   curl -X POST http://10.110.204.22:8080/function/hello-test --data-binary '{"docs":[{"x":"y","a":"b"}]}'
+   curl -X POST http://CloudIP:8080/function/hello-test --data-binary '{"docs":[{"x":"y","a":"b"}]}'
 
 9) OpenFaaS GUI to invoke the function
-   http://129.114.25.12:31112/ui/
+   http://CloudIP:31112/ui/
 
 
 ### OpenWhisk Installation Steps:
@@ -116,7 +116,7 @@ wsk action create owf --kind python:3 owf.zip -i
 ### create trigger command (To invoke a function you would need to create a trigger)
 
 wsk trigger create MyKafkaTrigger -f /whisk.system/messaging/kafkaFeed -p
-brokers "[\"129.114.25.12:9092\"]" -p topic openwhisk -p isJSONData true -i
+brokers "[\"CloudIP:9092\"]" -p topic openwhisk -p isJSONData true -i
 
 ### create RULE to associate the trigger with function
 
