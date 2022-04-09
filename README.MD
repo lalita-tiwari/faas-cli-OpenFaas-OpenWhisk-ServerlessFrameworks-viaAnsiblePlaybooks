@@ -2,9 +2,17 @@
 # A command line tool to implement the Serverless Frameworks in private clouds
 
 This directory contains code for a CLI (Command Line Interface) tool which is created to automate the implementation
-of serverless FaaS frameworks OpenFaaS and openWhisk on top of the kubernetes cluster node.
+of serverless FaaS frameworks OpenFaaS or openWhisk in the private clouds.
+It is designed on top of the kubernetes cluster node.
 
 This tool is tested on macOS and compatible with intel and Apple Silicon.
+
+### How it functios
+The CLI tool asks for user consent to install Ansible on user's machine.
+Next choice,is given to install docker and kubernetes on the remote host in private cloud.
+After that, the choice to install either OpenFaas or OpenWhisk is given and based on that the serverless FaaS framework is installed.
+
+
 
 ### Pre-requisite to run this CLI
 
@@ -43,7 +51,7 @@ go build faas-cli(tool name defined in go.mod file)
 Once downloaded you'll get the faas-cli command line zip folder.
 unzip the folder.
 
-To allow permission run 
+To allow permission  (Allow in System Preferences -> Security)
 --> chmod +x CLI_Project
 
 --> To Run
