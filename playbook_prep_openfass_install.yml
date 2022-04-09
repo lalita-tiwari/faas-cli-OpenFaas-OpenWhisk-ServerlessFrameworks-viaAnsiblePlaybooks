@@ -13,3 +13,10 @@
     - name: Install helm
       ansible.builtin.shell:
         cmd: apt-get install helm
+
+    - name: Disable FW
+      ansible.builtin.shell:
+        cmd: ufw disable
+    - name: Flush iptables
+      ansible.builtin.shell:
+        cmd: iptables -F

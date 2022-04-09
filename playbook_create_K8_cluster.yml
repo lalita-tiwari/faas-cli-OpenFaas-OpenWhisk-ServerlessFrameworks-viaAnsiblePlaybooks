@@ -11,7 +11,7 @@
   tasks:
   - name: creating master node by running kubeadm init
     ansible.builtin.shell:
-      cmd: 'sudo kubeadm init  --node-name kubemaster --control-plane-endpoint {{ master }} --pod-network-cidr=10.244.0.0/16;'
+      cmd: 'sudo kubeadm init  --node-name kubemaster --control-plane-endpoint "{{ master }}" --pod-network-cidr=10.244.0.0/16;'
     register: output
 
 
@@ -24,14 +24,6 @@
     ansible.builtin.shell:
       cmd: chmod -R 777 /home/cc/.kube
 
-  - name: Apply Flannel
-    ansible.builtin.shell:
-     cmd:  kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-
-
-  - name: taint the master node
-    ansible.builtin.shell:
-      cmd: kubectl taint nodes kubemaster node-role.kubernetes.io/master-
 
 
 

@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 var remote_host string
@@ -18,41 +19,6 @@ func main() {
 	askForK8sChoice()
 }
 
-func main3() {
-	fmt.Println("Please provide remote host ip: ")
-	reader := bufio.NewReader(os.Stdin)
-	response, err := reader.ReadString('\n')
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	response = strings.ToLower(strings.TrimSpace(response))
-	//ip := runCommand("ip address|grep \"inet 10.\"| awk '{print $2}'|cut -d '/' -f 1")
-	runCommand("ansible-playbook playbook_install_nfs.yml -i " + response + ",")
-}
-
-func main2() {
-
-	//fmt.Printf("Hi")
-	faasChoice := askForFaaSChoice()
-	if faasChoice == "1" {
-		fmt.Println("you have chosen to install OpenFaaS")
-	} else {
-		fmt.Println("you have chosen to install OpenWhisk")
-	}
-
-	output := runCommand("kubectl config current-context")
-	//fmt.Printf(output)
-	res := askForConfirmation("Is " + output + " the right Kubernetes context you want to install FaaS?")
-	if res == "Yes" {
-		response := runCommand("kubectl get nodes -o wide| grep master | awk '{print $6}'")
-		fmt.Println("The chosen FaaS will be deployed on " + response)
-		fmt.Println("Please enter user credentials for " + response)
-		askUserCredentials()
-		installNFS()
-	}
-
-}
 func askForConfirmation(s string) string {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -116,14 +82,8 @@ func askForK8sChoice() string {
 
 		remote_host = strings.ToLower(strings.TrimSpace(response))
 		installAnsible()
-		val := askForFaaSChoice()
-		if val == "1" {
-			fmt.Println("Installing OpenFaaS it will take some time ....")
-			runCommand("ansible-playbook playbook_install_openfass.yml -i " + remote_host + ",")
-		} else {
-			fmt.Println("Installing OpenWhisk it will take some time ....")
-			runCommand("ansible-playbook playbook_install_openfass.yml -i " + remote_host + ",")
-		}
+		installFrameworks()
+
 	} else {
 		fmt.Println("Do you want the tool to create single node K8 managed cluster? [y/n]:  ")
 		response, err = reader.ReadString('\n')
@@ -140,18 +100,15 @@ func askForK8sChoice() string {
 			remote_host = strings.ToLower(strings.TrimSpace(response))
 			fmt.Println("Installing Ansible on host")
 			installAnsible()
-			fmt.Println("Installing Kubernetes this will take a while...... ")
-			runCommand("ansible-playbook playbook_create_K8_cluster.yml -i " + remote_host + ", -e 'master=" + remote_host + "'")
-			fmt.Println("Configuring Kubernetes it will take a while...... ")
-			runCommand("ansible-playbook playbook_install_docker_kubernetes_on_cloud.yml -i " + remote_host + ", -e 'hostname=" + remote_host + "'")
-			val := askForFaaSChoice()
-			if val == "1" {
-				fmt.Println("Installing OpenFaaS it will take some time ....")
-				runCommand("ansible-playbook playbook_install_openfass.yml -i " + remote_host + ",")
-			} else {
-				fmt.Println("Installing OpenWhisk it will take some time ....")
-				runCommand("ansible-playbook playbook_install_openfass.yml -i " + remote_host + ",")
-			}
+			fmt.Println("Installing docker and Kubernetes this will take a while...... ")
+			fmt.Println(runCommand("ansible-playbook playbook_install_docker_kubernetes_on_cloud.yml -i " + remote_host + ", -e 'hostname=" + remote_host + "'"))
+			fmt.Println("docker and Kubernetes are installed")
+			time.Sleep(10)
+			fmt.Println("Configuring Kubernetes cluster, it will take a while...... ")
+			fmt.Println(runCommand("ansible-playbook playbook_create_K8_cluster.yml -i " + remote_host + ", -e 'master=" + remote_host + "'"))
+
+			installFrameworks()
+
 		}
 	}
 	response, err = reader.ReadString('\n')
@@ -186,7 +143,7 @@ func installNFS() {
 	if response != "" {
 		fmt.Println("Ansible Found")
 	}
-	runCommand("ansible-playbook playbook_install_nfs.yml -i " + remote_host + ",")
+	fmt.Println(runCommand("ansible-playbook playbook_install_nfs.yml -i " + remote_host + ","))
 }
 func installAnsible() {
 
@@ -201,4 +158,26 @@ func installAnsible() {
 		println("Ansible Installed ... ")
 		installNFS()
 	}
+}
+
+func installFrameworks() {
+
+	val := askForFaaSChoice()
+	if val == "1" {
+		fmt.Println("Prepare for Installing OpenFaaS ....")
+
+		fmt.Println(runCommand("ansible-playbook playbook_prep_openfass_install.yml -i " + remote_host + ","))
+		fmt.Println("Installing OpenFaaS Framework will take some time ....")
+		fmt.Println(runCommand("ansible-playbook playbook_install_openfass.yml -i " + remote_host + ","))
+
+		fmt.Println("OpenFaaS serverless Framework is installed and ready to deploy the functions")
+		//'PASSWORD=$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode) && echo "OpenFaaS admin password: $PASSWORD"'
+		fmt.Println("OpenFaaS Framework can be accessed via below link with user name admin and please copy the password from above printed command")
+		fmt.Println("http://129.114.25.142:31112")
+	} else {
+		fmt.Println("Installing OpenWhisk Framework it will take some time ....")
+		fmt.Println(runCommand("ansible-playbook playbook_install_openwhisk.yml -i " + remote_host + ","))
+		fmt.Println("OpenWhisk Framework is installed")
+	}
+
 }

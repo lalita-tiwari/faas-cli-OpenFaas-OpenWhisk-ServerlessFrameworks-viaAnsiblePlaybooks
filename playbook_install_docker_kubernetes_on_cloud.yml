@@ -64,7 +64,7 @@
      service:
        name: kubelet
        enabled: yes
-   - name: taint the master node
+   - name: Add the master node hostname
      ansible.builtin.shell:
        cmd: 'echo "{{ hostname }} kubemaster" >> /etc/hosts'
    - name: Configure Docker Daemon

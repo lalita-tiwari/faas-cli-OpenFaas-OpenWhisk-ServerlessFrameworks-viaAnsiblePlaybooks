@@ -6,15 +6,15 @@
   tasks:
     - name: ensure nfs is at the latest version
       ansible.builtin.shell:
-        cmd: apt install -y nfs-kernel-server
+        cmd: apt install -y nfs-kernel-server 
 
-    - name: enable nfs service
-      ansible.builtin.shell:
-          cmd: service nfs-kernel-server enable
+   # - name: enable nfs service
+   #   ansible.builtin.shell:
+   #     cmd: service nfs-kernel-server enable
 
     - name: start nfs-kernel-server
       ansible.builtin.shell:
-          cmd: service nfs-kernel-server start
+        cmd: service nfs-kernel-server start
 
     - name: Create NFS Monunt
       ansible.builtin.shell:
