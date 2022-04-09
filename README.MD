@@ -1,5 +1,5 @@
 
-# A command line tool to implement the Serverless Frameworks in private clouds
+# A command line tool to implement the Serverless Frameworks OpenFaaS or OpenWhisk in private clouds
 
 This directory contains code for a CLI (Command Line Interface) tool which is created to automate the implementation
 of serverless FaaS frameworks OpenFaaS or openWhisk in the private clouds.
