@@ -49,6 +49,7 @@ After that, the choice to install either OpenFaas or OpenWhisk is given and base
 
 You can install the CLI with a curl utility script, brew or by downloading the binary from the releases page.
 In go.mod file define the name of your CLI tool
+
 --> To build,
 go build faas-cli(tool name defined in go.mod file)
 
@@ -69,7 +70,7 @@ To allow permission  (Allow in System Preferences -> Security)
 4) An ansible playbook to install openFaaS framework
 
 
-### Accessing OpenFaaS Frameworks
+### Accessing OpenFaaS Framework
 
 OpenFaaS Framework can be accessed via below link with username admin and password will be provided in the end of running this tool.
 http://CloudIP:31112
