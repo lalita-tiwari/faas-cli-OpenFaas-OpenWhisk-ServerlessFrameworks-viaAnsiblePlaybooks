@@ -57,10 +57,13 @@ go build faas-cli(tool name defined in go.mod file)
 Once downloaded you'll get the faas-cli command line zip folder.
 unzip the folder.
 
-To allow permission  (Allow in System Preferences -> Security)
---> chmod +x CLI_Project
+=> To allow permission  (Allow in System Preferences -> Security)
 
---> To Run
+
+=> In terminal, run this command to allow run permission for the first time,
+chmod +x CLI_Project
+
+-=> To Run
 ./CLI_Project
 
 ### This CLI is using below ansible playbooks to install and setup the packages on cloud Virtual Machines
@@ -73,7 +76,7 @@ To allow permission  (Allow in System Preferences -> Security)
 ### Accessing OpenFaaS Framework
 
 OpenFaaS Framework can be accessed via below link with username admin and password will be provided in the end of running this tool.
-http://CloudIP:31112
+http://remoteHostIP:31112
 
 ### Creating and executing a function via OpenFaaS
 
