@@ -59,11 +59,10 @@ unzip the folder.
 
 => To allow permission  (Allow in System Preferences -> Security)
 
-
 => In terminal, run this command to allow run permission for the first time,
 chmod +x CLI_Project
 
--=> To Run
+=> To finally run the cli, run the below command in terminal
 ./CLI_Project
 
 ### This CLI is using below ansible playbooks to install and setup the packages on cloud Virtual Machines
