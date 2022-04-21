@@ -24,11 +24,11 @@ After that, the choice to install either OpenFaas or OpenWhisk is given and base
 1) Create an instance in your private cloud 
 2) Assuming, the user has the public key set up already done in local machine and has sudo access to the remote machine
 3) Allow the below ports:
-  ==> For SSH (PORT 22)
+   - ==> For SSH (PORT 22)
   - Egress	IPv4	Any	Any	0.0.0.0/0	-	-	Delete Rule
   - Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
   - Ingress	IPv4	TCP	22 (SSH)	0.0.0.0/0,
-  ==> For kubernetes,docker and frameworks 
+    - ==> For kubernetes,docker and frameworks 
  -  Egress	IPv4	Any	Any	0.0.0.0/0	-	-	Delete Rule
  -  Egress	IPv6	Any	Any	::/0	-	-	Delete Rule
  -  Ingress	IPv4	TCP	443 (HTTPS)	0.0.0.0/0	-	-	Delete Rule
