@@ -5,7 +5,7 @@ This directory contains code for a CLI (Command Line Interface) tool which is cr
 of serverless FaaS frameworks OpenFaaS or openWhisk in the private clouds.
 It is designed on top of the kubernetes cluster node.
 
-This tool is tested on macOS and compatible with intel and Apple Silicon.
+### - This tool is tested on gcp Google Cloud Platform and on macOS and compatible with intel and Apple Silicon.
 
 
 ### How it functions?
