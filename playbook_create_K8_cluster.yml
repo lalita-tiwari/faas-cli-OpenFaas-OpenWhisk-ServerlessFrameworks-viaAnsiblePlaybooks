@@ -5,7 +5,7 @@
 #  tasks:
 
 - hosts: all
-  remote_user: cc
+#  remote_user: cc
   become: yes
   become_user: root
   tasks:
