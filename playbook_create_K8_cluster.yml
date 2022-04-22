@@ -22,7 +22,7 @@
 
   - name: setting a permission on kube config commands
     ansible.builtin.shell:
-      cmd: chmod -R 777 /home/$(id -u)/.kube
+      cmd: sudo chmod -R 777 $HOME/.kube
 
 
 
