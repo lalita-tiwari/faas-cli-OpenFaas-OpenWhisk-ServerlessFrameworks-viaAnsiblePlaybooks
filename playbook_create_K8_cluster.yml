@@ -17,7 +17,7 @@
 
   - name: run kube config commands
     ansible.builtin.shell:
-      cmd: mkdir -p .kube; cp -i /etc/kubernetes/admin.conf .kube/config; chown $(id -u cc):$(id -g cc) .kube/config
+      cmd: sudo mkdir -p .kube; sudo cp -i /etc/kubernetes/admin.conf .kube/config; sudo chown $(id -u):$(id -g) .kube/config
       #;chmod -R 777 .kube
 
   - name: setting a permission on kube config commands
