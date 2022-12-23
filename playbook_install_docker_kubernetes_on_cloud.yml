@@ -1,6 +1,6 @@
 ---
 - hosts: all
-#  remote_user: cc
+ # remote_user: cc
   become: yes
   become_user: root
   tasks:
@@ -47,26 +47,23 @@
      apt_key:
        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
        state: present
-   - name: Add Kubernetes Repository
-     apt_repository:
-       repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
-       state: present
-       filename: kubernetes
-       mode: 0600
-   - name: Installing Kubernetes Cluster Packages.
-     apt:
-       name:
-         - kubeadm
-         - kubectl
-         - kubelet
-       state: present
-   - name: Enable service kubelet, and enable persistently
-     service:
-       name: kubelet
-       enabled: yes
-   - name: Add the master node hostname
+
+   - name: stop containrd
      ansible.builtin.shell:
-       cmd: 'echo "{{ hostname }} kubemaster" >> /etc/hosts'
+       cmd: systemctl stop containerd; rm -rf /etc/containerd/config.toml; systemctl start containerd #sed -i 's/cri//g' /etc/containerd/config.toml; systemctl start containerd
+
+   - name: pause for 59 secs
+     pause:
+       seconds: 59
+
+   #- name: install new version of containerd
+   #  ansible.builtin.shell:
+   #    cmd: systemctl start containerd; wget https://github.com/containerd/containerd/releases/download/v1.6.12/containerd-1.6.12-linux-amd64.tar.gz; tar -xvf containerd-1.6.12-linux-amd64.tar.gz; cd bin; cp * /usr/bin/; systemctl start containerd
+
+   #- name: pause for 59 secs
+   #  pause:
+   #    seconds: 59
+   
    - name: Configure Docker Daemon
      copy:
        dest: "/etc/docker/daemon.json"
@@ -83,6 +80,40 @@
    - name: Reload Docker Daemon
      ansible.builtin.shell:
        cmd: systemctl daemon-reload & systemctl restart docker
+
+   - name: pause for 59 secs
+     pause:
+       seconds: 59
+
+   - name: change containerd.sock permission
+     ansible.builtin.shell:
+       cmd: chmod 777 /var/run/containerd/containerd.sock
+
+   - name: change containerd.sock permission
+     ansible.builtin.shell:
+       cmd: chmod 777 /var/run/docker.sock
+   
+   - name: Add Kubernetes Repository
+     apt_repository:
+       repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+       state: present
+       filename: kubernetes
+       mode: 0600
+   - name: Installing Kubernetes Cluster Packages.
+     apt:
+       name:
+         - kubeadm
+         - kubectl
+         - kubelet=1.25.5-00
+       state: present
+   - name: Enable service kubelet, and enable persistently
+     service:
+       name: kubelet
+       enabled: yes
+   - name: Add the master node hostname
+     ansible.builtin.shell:
+       cmd: 'echo "{{ hostname }} kubemaster" >> /etc/hosts'
+
    - name: Disable FW
      ansible.builtin.shell:
        cmd: ufw disable
