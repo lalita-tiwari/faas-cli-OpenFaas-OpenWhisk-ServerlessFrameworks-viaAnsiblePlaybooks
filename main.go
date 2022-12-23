@@ -173,7 +173,7 @@ func installFrameworks() {
 		fmt.Println("OpenFaaS serverless Framework is installed and ready to deploy the functions")
 		//'PASSWORD=$(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode) && echo "OpenFaaS admin password: $PASSWORD"'
 		fmt.Println("OpenFaaS Framework can be accessed via below link with user name admin and please copy the password from above printed command")
-		fmt.Println("http://129.114.25.142:31112")
+		fmt.Println("http://"+remote_host+":31112")
 	} else {
 		fmt.Println("Installing OpenWhisk Framework it will take some time ....")
 		fmt.Println(runCommand("ansible-playbook playbook_install_openwhisk.yml -i " + remote_host + ","))
