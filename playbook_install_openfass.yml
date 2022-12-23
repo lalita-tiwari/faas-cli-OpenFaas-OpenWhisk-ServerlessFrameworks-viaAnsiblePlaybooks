@@ -1,6 +1,6 @@
 ---
 - hosts: all
-#  remote_user: cc
+ # remote_user: cc
   tasks:
     - name: Apply Flannel
       ansible.builtin.shell:
@@ -9,7 +9,7 @@
 
     - name: taint the master node
       ansible.builtin.shell:
-        cmd: kubectl taint nodes kubemaster node-role.kubernetes.io/master-
+        cmd: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
     - name: Download charts
       ansible.builtin.shell:
